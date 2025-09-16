@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free AI Story Generator (Local, No Login)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-purple-50 to-purple-100 min-h-screen text-gray-800">
+  <header class="max-w-5xl mx-auto px-4 pt-10 pb-6">
+    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+      AI Story Generator — Free & Local (No API, No Login)
+    </h1>
+    <p class="mt-3 text-gray-600">
+      Runs on your computer using a free, open model via <span class="font-semibold">Ollama</span>.
+      No paid keys or accounts required.
+    </p>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 pb-24">
+    <div class="bg-white/80 backdrop-blur rounded-2xl shadow-xl p-6 md:p-8 border border-purple-100">
+      <label for="topic" class="block text-sm font-medium text-gray-700">What do you want to write a story about?</label>
+      <div class="mt-2 relative">
+        <textarea id="topic" rows="5" class="w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 focus:border-purple-400 p-4 outline-none" placeholder="e.g., A courier on a floating city who discovers a mysterious package that changes everything..."></textarea>
+        <button id="sample" class="absolute right-3 bottom-3 text-sm px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
+          Try a sample
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Length</label>
+          <select id="length" class="w-full mt-2 rounded-xl border-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            <option>Auto</option>
+            <option>Very short (~300 words)</option>
+            <option>Short (~800 words)</option>
+            <option>Medium (~1500 words)</option>
+            <option>Long (~2500 words)</option>
+            <option>Chapter (~4000 words)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Narrative Perspective</label>
+          <select id="perspective" class="w-full mt-2 rounded-xl border-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            <option>Auto</option>
+            <option>First person</option>
+            <option>Third person limited</option>
+            <option>Third person omniscient</option>
+            <option>Second person</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Audience</label>
+          <select id="audience" class="w-full mt-2 rounded-xl border-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            <option>Auto</option>
+            <option>Children</option>
+            <option>Young adult</option>
+            <option>General</option>
+            <option>Mature</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Story Format</label>
+          <select id="format" class="w-full mt-2 rounded-xl border-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            <option>Auto</option>
+            <option>Short story</option>
+            <option>Scene</option>
+            <option>Fairy tale</option>
+            <option>Script (dialogue-heavy)</option>
+            <option>Epistolary (letters/messages)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Genre</label>
+          <select id="genre" class="w-full mt-2 rounded-xl border-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            <option>Auto</option>
+            <option>Fantasy</option>
+            <option>Science fiction</option>
+            <option>Mystery/Thriller</option>
+            <option>Romance</option>
+            <option>Horror</option>
+            <option>Literary</option>
+            <option>Historical</option>
+            <option>Slice of life</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Output Language</label>
+          <select id="language" class="w-full mt-2 rounded-xl border-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            <option>Auto</option>
+            <option>English</option>
+            <option>Urdu</option>
+            <option>Hindi</option>
+            <option>Arabic</option>
+            <option>French</option>
+            <option>Spanish</option>
+            <option>German</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <button id="generate" class="flex-1 px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg shadow-purple-200 disabled:opacity-60 disabled:cursor-not-allowed">
+          Generate Story with AI
+        </button>
+        <button id="copy" class="px-5 py-3 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 font-medium text-gray-700 disabled:opacity-60 disabled:cursor-not-allowed">
+          Copy
+        </button>
+        <button id="clear" class="px-5 py-3 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 font-medium text-gray-700">
+          Clear
+        </button>
+      </div>
+
+      <div id="status" class="mt-4 text-sm text-gray-600"></div>
+
+      <section class="mt-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Story</label>
+        <div class="rounded-xl bg-gray-50 border border-gray-200 p-4">
+          <pre id="output" class="whitespace-pre-wrap font-sans text-gray-800"></pre>
+        </div>
+      </section>
+    </div>
+
+    <section class="mt-8 text-sm text-gray-500">
+      <h2 class="font-semibold text-gray-700">How this stays free</h2>
+      <ol class="list-decimal ml-5 mt-2 space-y-1">
+        <li>Install <b>Ollama</b> (free) and pull a local model like <code>qwen2.5:7b-instruct</code> or <code>mistral:7b-instruct</code>.</li>
+        <li>Run this site with the included Node server which proxies to your local Ollama at <code>http://localhost:11434</code>.</li>
+        <li>No paid API keys, no logins—everything runs on your machine.</li>
+      </ol>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
